@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="8369cf3a-ab3e-4cfd-aace-6efdac781941" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<file:config name="File_Config" doc:name="File Config" doc:id="c308deec-b915-437f-9b7e-b454df012cc4" />
+	<file:config name="File_Config1" doc:name="File Config" doc:id="c41006e2-2198-4c12-8dca-b58022a888d7" />
+	<flow name="jsonFlow" doc:id="1995a87f-fa15-49f8-a249-dfb9b1f7e9a4" >
+		<http:listener doc:name="Listener" doc:id="b6f98602-2aba-4f61-b541-069714c61b84" config-ref="HTTP_Listener_config" path="/json"/>
+		<file:read doc:id="f13e3a0f-f16f-47e6-8f23-95d09260590a" config-ref="File_Config" path="C:\Users\Raj\Desktop\writefile111.csv"/>
+		<ee:transform doc:name="Transform Message" doc:id="6e6d5b07-13f3-4cb5-833e-5e10940e7f54" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<file:write doc:name="Write" doc:id="7fde75f3-4b49-422f-b1ea-3f98c4e675e6" config-ref="File_Config1" path="desktop/writefile.json"/>
+	</flow>
+</mule>
